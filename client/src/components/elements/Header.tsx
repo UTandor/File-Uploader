@@ -20,23 +20,23 @@ const Header = () => {
     }
   }, []);
   return (
-    <div className="w-screen select-none bg-foreground text-background flex  justify-between px-7 py-3">
+    <div className="w-screen select-none bg-background text-foreground flex  justify-between px-7 py-3">
       <div className="font-bold text-xl">Logo</div>
       <div>
         <ul className="flex flex-row space-x-4">
-          <Button variant={"link"} className=" p-0">
+          <Button variant={"link"} className="text-forerground p-0">
             Home
           </Button>
-          <Button variant={"link"} className=" p-0">
+          <Button variant={"link"} className="text-forerground p-0">
             Home
           </Button>
-          <Button variant={"link"} className=" p-0">
+          <Button variant={"link"} className="text-forerground p-0">
             Home
           </Button>
-          <Button variant={"link"} className=" p-0">
+          <Button variant={"link"} className="text-forerground p-0">
             Home
           </Button>
-          <Button variant={"link"} className=" p-0">
+          <Button variant={"link"} className="text-forerground p-0">
             Home
           </Button>
         </ul>
@@ -48,13 +48,11 @@ const Header = () => {
           <DropdownMenu>
             <DropdownMenuTrigger>
               <Avatar>
-                <AvatarFallback className="text-primary bg-foreground  font-bold">
-                  CN
-                </AvatarFallback>
+                <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-foreground text-background border border-gray-300 border-opacity-50">
-              <DropdownMenuLabel className="border-b-opacity-50">My Account</DropdownMenuLabel>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Profile</DropdownMenuItem>
               <DropdownMenuItem>Billing</DropdownMenuItem>

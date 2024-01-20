@@ -3,28 +3,27 @@ import {
   ArrowRight,
   Cable,
   FileText,
-  InboxIcon,
-  LockIcon,
-  MergeIcon,
   PanelsTopLeftIcon,
   PencilIcon,
   SearchIcon,
-  SettingsIcon,
   Shield,
 } from "lucide-react";
 import Header from "./Header";
 
 const LandingPage = () => {
   return (
-    <div className="h-screen overflow-x-hidden">
+    <div className="h-screen overflow-x-hidden bg-background">
       <Header />
-      <section className="h-screen grid place-items-center bg-foreground">
+      <section className="h-screen grid place-items-center">
         <div className="flex flex-col justify-center items-center space-y-5">
-          <h1 className="text-background space-y-2 text-5xl  font-extrabold text-center">
+          <div className="bg-secondary font-semibold px-5 text-sm shadow-inner  py-2 text-foreground rounded-full">
+            Qomal is dead!
+          </div>
+          <h1 className="text-foreground space-y-2 text-5xl  font-extrabold text-center">
             <p>Talk to your documents</p>
             <p>with Qomal</p>
           </h1>
-          <h1 className="text-background text-xl  font-semibold opacity-80 text-center">
+          <h1 className="text-foreground text-xl  font-semibold opacity-80 text-center">
             Use our advanced AI systems to ask questions about your documents
             <br />
             and get descriptive answers to them in realtime.
@@ -84,30 +83,30 @@ const Features = () => {
   ];
 
   return (
-    <section className=" p-14 bg-card-foreground bg-opacity-70 flex flex-col items-center justify-center">
+    <section className="bg-background p-2  bg-opacity-70  flex flex-col items-center justify-center">
       <div className="text-center">
         <div className="space-y-2 mb-8">
-          <h1 className="font-bold text-4xl text-background ">
+          <h1 className="font-bold text-4xl text-foreground ">
             Discover Our Unique Features
           </h1>
-          <p className="max-w-[600px]  text-background opacity-70  mx-auto">
+          <p className="max-w-[600px]  text-foreground opacity-70  mx-auto">
             Our features are designed to enhance your productivity and
             streamline your workflow.
           </p>
         </div>
       </div>
-      <div className="w-full max-w-full space-y-4 mx-auto mt-auto grid">
+      <div className="w-full max-w-full p-3 space-y-4 mx-auto mt-auto grid">
         <div className="grid grid-cols-3 gap-8">
           {featuresData.map((feature, index) => (
             <div
               key={index}
-              className="flex flex-col items-center space-y-2 text-center border border-gray-800 p-4 rounded-lg"
+              className="flex flex-col items-center space-y-2 text-center border p-4 rounded-lg"
             >
-              <div className="p-2 bg-black  bg-opacity-50 rounded-full">
+              <div className="p-2  rounded-full">
                 {feature.icon}
               </div>
-              <h2 className="text-xl font-bold text-white">{feature.title}</h2>
-              <p className="text-zinc-200 dark:text-zinc-100">
+              <h2 className="text-xl font-bold text-foreground">{feature.title}</h2>
+              <p className="text-foreground opacity-70">
                 {feature.description}
               </p>
             </div>
