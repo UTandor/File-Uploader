@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import LandingPage from "./components/elements/LandingPage";
 import Login from "./components/elements/Login";
+import { Toaster } from "@/components/ui/sonner";
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
         <Route element={<LandingPage />} path="/" />
         <Route element={<Login />} path="/login" />
       </Routes>
+      <Toaster />
     </div>
   );
 }
