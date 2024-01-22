@@ -7,7 +7,7 @@ app.use(cors())
 const PORT = 5000
 
 const dbUrl =
-  "mongodb+srv://ancrobot2244:deI3RAmjxFgKOgDe@cluster0.bhgwkdm.mongodb.net/qomal-dev";
+  "mongodb+srv://ancrobot2244:KbjoZUMFF48TlSzK@cluster0.bhgwkdm.mongodb.net/qomal-dev";
 mongoose.connect(dbUrl);
 console.log("Mongo DB connected")
 const authRouter = require("./routes/auth");

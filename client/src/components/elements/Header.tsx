@@ -20,30 +20,15 @@ const Header = () => {
     }
   }, []);
   return (
-    <div className="w-screen select-none bg-background text-foreground flex  justify-between px-7 py-3">
+    <div className="w-screen select-none shadow-md items-center text-foreground flex  justify-between px-7 py-3">
       <div className="font-bold text-xl">Logo</div>
-      <div>
-        <ul className="flex flex-row space-x-4">
-          <Button variant={"link"} className="text-forerground p-0">
-            Home
-          </Button>
-          <Button variant={"link"} className="text-forerground p-0">
-            Home
-          </Button>
-          <Button variant={"link"} className="text-forerground p-0">
-            Home
-          </Button>
-          <Button variant={"link"} className="text-forerground p-0">
-            Home
-          </Button>
-          <Button variant={"link"} className="text-forerground p-0">
-            Home
-          </Button>
-        </ul>
-      </div>
+
       <div className="">
         {username == "" ? (
-          <Button variant={"secondary"}>Login</Button>
+          <>
+            <Button variant={"link"}>Sign In</Button>
+            <Button variant={"secondary"}>Get Started</Button>
+          </>
         ) : (
           <DropdownMenu>
             <DropdownMenuTrigger>
