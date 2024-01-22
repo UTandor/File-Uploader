@@ -1,4 +1,5 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
+import { useDropzone } from "react-dropzone";
 import {
   Dialog,
   DialogContent,
@@ -10,7 +11,6 @@ import { Ghost, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Dashboard = () => {
-
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, _setUsername] = useState(localStorage.getItem("username"));
 
@@ -38,6 +38,12 @@ const Dashboard = () => {
 export default Dashboard;
 
 const Main = ({ username }) => {
+  const inputFile = useRef<HTMLInputElement | null>(null);
+  const onButtonClick = () => {
+    if (inputFile.current) {
+      inputFile.current.click();
+    }
+  };
   return (
     <div className="min-h-screen bg-white py-8">
       <header className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -60,10 +66,19 @@ const Main = ({ username }) => {
                     <div className="flex justify-between items-start">
                       <button className="text-gray-400 hover:text-gray-500"></button>
                     </div>
-                    <div className="mt-4 flex flex-col items-center justify-center p-8 border-2 border-dashed rounded-lg">
+                    <div
+                      onClick={onButtonClick}
+                      className="mt-4 flex flex-col items-center hover:bg-secondary   hover:cursor-pointer justify-center p-8 border-2 border-dashed rounded-lg"
+                    >
+                      <input
+                        type="file"
+                        id="file"
+                        ref={inputFile}
+                        style={{ display: "none" }}
+                      />
                       <Upload className="h-8 w-8 text-gray-400" />
-                      <p className="mt-2 text-sm text-gray-600">
-                        Click to upload or drag and drop
+                      <p className="mt-2 text-sm text-gray-600 ">
+                        Files are being processed
                       </p>
                       <p className="text-xs text-gray-500">PDF (up to 4MB)</p>
                     </div>
