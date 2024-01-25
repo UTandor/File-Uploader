@@ -1,31 +1,24 @@
 import { useDropzone } from "react-dropzone";
-import { CheckCircle2, FileText, Ghost, Upload } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
+import { XCircleIcon, FileText, Ghost, Upload, Divide } from "lucide-react";
 import {
   Dialog,
   DialogContent,
   DialogTrigger,
   DialogTitle,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { useEffect, useState, useRef } from "react";
 import { Button } from "../ui/button";
 
-const Main = ({ username }: { username: string }) => {
+const Main = () => {
   const [files, setFiles] = useState<File[]>([]);
   const inputFile = useRef<HTMLInputElement | null>(null);
-  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+  const { getInputProps } = useDropzone({
     onDrop: async (acceptedFiles: File[]) => {
-      console.log("Files selected:", acceptedFiles);
-      console.log("File's type: ", acceptedFiles[0].type);
-
       const updatedFiles = [...files];
 
       for (let i = 0; i < acceptedFiles.length; i++) {
         const file = acceptedFiles[i];
-
-        if (file.type !== "application/pdf") {
-          console.log(`${file.name} NOT PDF.`);
-        }
 
         updatedFiles.push(file);
       }
@@ -42,6 +35,18 @@ const Main = ({ username }: { username: string }) => {
     if (inputFile.current) {
       inputFile.current.click();
     }
+  };
+
+  const handleSave = () => {
+    console.log("Saved");
+  };
+  const handleRemoveFile = (
+    id: number,
+    event: React.MouseEvent<SVGElement, MouseEvent>
+  ) => {
+    event.stopPropagation(); // Stop the event from propagating to the parent div
+    const updatedFiles = files.filter((_, index) => index !== id);
+    setFiles(updatedFiles);
   };
 
   return (
@@ -85,14 +90,17 @@ const Main = ({ username }: { username: string }) => {
                             key={id}
                             className="flex items-center justify-between mt-3"
                           >
-                            <div className="flex items-center space-x-4">
+                            <div className="flex items-center space-x-1">
                               <FileText className="opacity-40" />
                               <h1>
                                 {file.name.substring(0, 15)}....
                                 {file.name.split(".").pop()}
                               </h1>
                             </div>
-                            <CheckCircle2 className="opacity-40 text-green-700" />
+                            <XCircleIcon
+                              onClick={(event) => handleRemoveFile(id, event)}
+                              className="opacity-40 pointer-events-auto ml-4  text-red-700 cursor-pointer"
+                            />
                           </div>
                         ))}
                       </div>
@@ -100,7 +108,9 @@ const Main = ({ username }: { username: string }) => {
                     <p className="text-xs text-gray-500">PDF (up to 4MB)</p>
                   </div>
                   <div className="w-full items-center flex justify-center">
-                    <Button>Save</Button>
+                    <Button asChild>
+                      <DialogClose onClick={handleSave}>Save</DialogClose>
+                    </Button>
                   </div>
                 </div>
               </DialogContent>
@@ -113,14 +123,19 @@ const Main = ({ username }: { username: string }) => {
           <div className="text-left">
             <h1 className="text-4xl  font-semibold text-gray-900">My Files</h1>
             <div className="mt-6 text-center ">
-              <Ghost className="mx-auto h-12 w-12 text-primary opacity-50" />
-              <h3 className="mt-2 text-sm font-medium text-gray-900">
-                Pretty empty around here
-              </h3>
-              <p className="mt-1 text-sm text-gray-600">
-                Let's upload your first PDF.
-              </p>
-              <div className="mt-6"></div>
+              {files.length === 0 ? (
+                <div>
+                  <Ghost className="mx-auto h-12 w-12 text-primary opacity-50" />
+                  <h3 className="mt-2 text-sm font-medium text-gray-900">
+                    Pretty empty around here
+                  </h3>
+                  <p className="mt-1 text-sm text-gray-600">
+                    Let's upload your first PDF.
+                  </p>
+                </div>
+              ) : (
+                <div>You have uploadded files</div>
+              )}
             </div>
           </div>
         </div>
