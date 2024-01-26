@@ -1,4 +1,13 @@
 import { Ghost } from "lucide-react";
+import { FileText } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 interface ViewerProps {
   files: File[];
@@ -18,10 +27,21 @@ const Viewer: React.FC<ViewerProps> = ({ files }) => {
           </p>
         </div>
       ) : (
-        <div>
-          You have uploadded files:
+        <div className="grid grid-cols-5">
           {files.map((file: File) => (
-            <h1 className="font-semibold text-2xl">{file.name}</h1>
+            <Card className="w-48">
+              <CardHeader>
+                <CardTitle className="w-full  from-current bg-primary bg-gradient-to-l text-center p-2 rounded-lg to-inherit  ">
+                  <FileText className="text-primary-foreground text-4xl w-12 h-12 text-center mx-auto "></FileText>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p>
+                  {file.name.substring(0, 10)}....
+                  {file.name.split(".").pop()}
+                </p>
+              </CardContent>
+            </Card>
           ))}
         </div>
       )}
