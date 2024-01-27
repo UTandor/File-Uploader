@@ -219,7 +219,7 @@ const Login = () => {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button type="submit">Save password</Button>
+                <Button type="submit">Register</Button>
               </CardFooter>
             </form>
           </Card>
