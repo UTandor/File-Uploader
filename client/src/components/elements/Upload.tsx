@@ -37,6 +37,7 @@ const Upload: React.FC<UploadProps> = ({ files, onFileChange }) => {
 
   const handleRemoveFile = (id: number) => {
     const updatedFiles = files.filter((_, index) => index !== id);
+    console.log(updatedFiles)
     onFileChange(updatedFiles);
   };
 
@@ -46,6 +47,7 @@ const Upload: React.FC<UploadProps> = ({ files, onFileChange }) => {
   }, [files, onFileChange]);
 
   return (
+   
     <div>
       <Dialog>
         <DialogTrigger className="text-white bg-primary hover:bg-opacity-60 px-4 py-2 rounded-md">
