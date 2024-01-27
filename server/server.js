@@ -11,7 +11,11 @@ const dbUrl =
 mongoose.connect(dbUrl);
 console.log("Mongo DB connected")
 const authRouter = require("./routes/auth");
+const fileRouter = require('./routes/files')
+
 app.use("/auth", authRouter);
+app.use("/files", fileRouter);
+
 
 app.listen(PORT, () => {
   console.log(`Running on Port: ${PORT}`);
