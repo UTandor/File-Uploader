@@ -5,9 +5,9 @@ const User = require("../models/user");
 const File = require("../models/file");
 
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+const upload = multer({ dest: "upload/" });
 
-router.post("/:username", upload.single("file"), async (req, res) => {
+router.post("/:username", upload.array("files"), async (req, res) => {
   const { username } = req.params;
 
   try {
@@ -16,29 +16,34 @@ router.post("/:username", upload.single("file"), async (req, res) => {
       return res.status(404).json({ error: "User not found." });
     }
 
-    if (!req.file) {
+    if (!req.files || req.files.length === 0) {
       return res.status(400).json({ error: "No file uploaded." });
     }
-    const file = new File({
-      filename: req.file.originalname,
-      data: req.file.buffer,
-      user: user._id,
-      details: {
-        path: req.file.path,
-        lastModified: req.file.lastModified,
-        lastModifiedDate: req.file.lastModifiedDate,
-        name: req.file.originalname,
-        size: req.file.size,
-        type: req.file.mimetype,
-        webkitRelativePath: req.file.webkitRelativePath,
-      },
-    });
-    await file.save();
 
-    res.status(201).send({ fileId: file._id, file: file });
+    // Save all files in parallel
+    const files = req.files.map((file) => {
+      return new File({
+        filename: file.originalname,
+        data: file.buffer,
+        user: user._id,
+        details: JSON.stringify({
+          path: file.path,
+          lastModified: file.lastModified,
+          lastModifiedDate: file.lastModifiedDate,
+          name: file.originalname,
+          size: file.size,
+          type: file.mimetype,
+          webkitRelativePath: file.webkitRelativePath,
+        }),
+      });
+    });
+
+    await Promise.all(files.map((file) => file.save()));
+
+    res.status(201).json({ files: files });
   } catch (e) {
     console.error(e);
-    res.status(500).json({ error: e });
+    res.status(500).json({ error: e.message });
   }
 });
 

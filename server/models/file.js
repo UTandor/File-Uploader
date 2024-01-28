@@ -1,23 +1,12 @@
-// models/file.js
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-// Define a nested schema for file details
-const FileDetailsSchema = new mongoose.Schema({
-  path: String,
-  lastModified: Date,
-  lastModifiedDate: Date,
-  name: String,
-  size: Number,
-  type: String,
-  webkitRelativePath: String,
+const fileSchema = new mongoose.Schema({
+  filename: String,
+  data: Buffer,
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  details: { type: mongoose.Schema.Types.Mixed },
 });
 
-const FileSchema = new mongoose.Schema({
-  filename: { type: String, required: true },
-  data: { type: Buffer, required: true },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "Users", required: true },
-  details: { type: FileDetailsSchema }, // Use the nested schema here
-});
+const MyFile = mongoose.model('MyFile', fileSchema);
 
-const File = mongoose.model("Files", FileSchema);
-module.exports = File;
+module.exports = MyFile;

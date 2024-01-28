@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { XCircleIcon, FileText, Upload as UploadIcon } from "lucide-react";
 import {
@@ -9,6 +9,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
+import axios from "axios";
 
 interface UploadProps {
   files: File[];
@@ -17,10 +18,13 @@ interface UploadProps {
 
 const Upload: React.FC<UploadProps> = ({ files, onFileChange }) => {
   const inputFile = useRef<HTMLInputElement | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [droppedFiles, setDroppedFiles] = useState<File[]>([]);
 
   const { getInputProps } = useDropzone({
     onDrop: (acceptedFiles: File[]) => {
       const updatedFiles = [...files, ...acceptedFiles];
+      setDroppedFiles(updatedFiles);
       onFileChange(updatedFiles);
     },
   });
@@ -31,23 +35,49 @@ const Upload: React.FC<UploadProps> = ({ files, onFileChange }) => {
     }
   };
 
-  const handleSave = () => {
-    console.log("Saved");
+  const handleSave = async () => {
+    try {
+      setUploading(true);
+
+      const formData = new FormData();
+      droppedFiles.forEach((file, index) => {
+        formData.append(`files`, file);
+      });
+
+      console.log("Form data:", formData);
+
+      const response = await axios.post(
+        `http://localhost:5000/files/${localStorage.getItem("username")}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      onFileChange(files);
+
+      console.log(response.data);
+    } catch (error) {
+      console.error("File upload failed:", error);
+    } finally {
+      setUploading(false);
+    }
   };
+
 
   const handleRemoveFile = (id: number) => {
     const updatedFiles = files.filter((_, index) => index !== id);
-    console.log(updatedFiles)
+    console.log(updatedFiles);
+    setDroppedFiles(updatedFiles);
     onFileChange(updatedFiles);
   };
 
   useEffect(() => {
     console.log(files);
-    onFileChange(files); // Update the parent state when files change
   }, [files, onFileChange]);
 
   return (
-   
     <div>
       <Dialog>
         <DialogTrigger className="text-white bg-primary hover:bg-opacity-60 px-4 py-2 rounded-md">
@@ -76,10 +106,9 @@ const Upload: React.FC<UploadProps> = ({ files, onFileChange }) => {
                 </div>
               ) : (
                 <div className="flex flex-col items-stretch">
-                  <p>Uploaded files</p>
                   {files.map((file, id) => (
                     <div
-                      key={id}
+                      key={file.name}
                       className="flex items-center justify-between mt-3"
                     >
                       <div className="flex items-center space-x-1">
@@ -100,9 +129,9 @@ const Upload: React.FC<UploadProps> = ({ files, onFileChange }) => {
               <p className="text-xs text-gray-500">PDF (up to 4MB)</p>
             </div>
             <div className="w-full items-center flex justify-center">
-              <Button asChild>
+              <Button asChild disabled={uploading}>
                 <DialogClose onClick={handleSave}>Save</DialogClose>
-              </Button>  
+              </Button>
             </div>
           </div>
         </DialogContent>
